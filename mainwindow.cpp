@@ -39,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSelection_colour, &QAction::triggered, this, &MainWindow::on_SelectionColour_pressed);
     connect(ui->actionSave_file_as, &QAction::triggered, this, &MainWindow::on_savefile_as_pressed);
     connect(ui->actionSynHL, &QAction::toggled, this, &MainWindow::SynHL);
-    connect (ui->actionUTF_8, &QAction::triggered, this, &MainWindow::code_UTF8);
+    connect(ui->actionUTF_8, &QAction::triggered, this, &MainWindow::code_UTF8);
     connect(ui->actionKOI_8, &QAction::triggered, this, &MainWindow::code_KOI8);
     connect(ui->actionWindows1251, &QAction::triggered, this, &MainWindow::code_Windows1251);
     connect(ui->actionMacintosh, &QAction::triggered, this, &MainWindow::code_Macintosh);
@@ -133,15 +133,11 @@ void MainWindow::SynHL()
      pFontMain->setSelectColor(Qt::blue);
 
   } else {
-      pFontMain->setFontColor(defaultColor);
       delete pHighlight;
-      QString text = ui->textEdit->toPlainText();
-      pFontMain->setFontStyle(QFont("Times New Roman", 0, 75, false));
+      pFontMain->setFontColor(defaultFontColor);
+      pFontMain->setFontStyle(defaultFontStyle);
       pFontMain->setBackgroundColor(defaultBackgroundColor);
       pFontMain->setSelectColor(defaultSelectColor);
-
-
-
   }
 }
 

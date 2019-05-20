@@ -11,7 +11,7 @@
 
 const int defaultFontSize = 20;
 const QFont defaultFontStyle("Times New Roman");
-const QColor defaultColor = Qt::black;
+const QColor defaultFontColor = Qt::black;
 const QColor defaultBackgroundColor = Qt::white;
 const QColor defaultSelectColor = QColor::fromRgb(0, 120, 215, 255);
 

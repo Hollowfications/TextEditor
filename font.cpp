@@ -5,7 +5,7 @@ Font::Font(QTextEdit* text)
     pFont = text;
     fontStyle = defaultFontStyle;
     fontSize = defaultFontSize;
-    fontColor = defaultColor;
+    fontColor = defaultFontColor;
     backgroundColor = defaultBackgroundColor;
     selectColor = defaultSelectColor;
 }

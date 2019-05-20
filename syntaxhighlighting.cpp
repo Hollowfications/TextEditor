@@ -1,11 +1,12 @@
 #include "syntaxhighlighting.h"
+#include <QRegExp>
 
 Highlight::Highlight(QTextDocument *parent)
     : QSyntaxHighlighter(parent)
 {
     SyntaxHighlightingRule rule;
 
-    normalTextFormat.setForeground(Qt::white);
+    normalTextFormat.setForeground(Qt::darkCyan);
     rule.pattern = QRegExp("\\b[A-Za-z]+\\b");
     rule.format = normalTextFormat;
     highlightingRules.append(rule);
@@ -22,13 +23,12 @@ Highlight::Highlight(QTextDocument *parent)
                     << "\\bslots\\b" << "\\bstatic\\b" << "\\bstruct\\b"
                     << "\\btemplate\\b" << "\\btypedef\\b" << "\\btypename\\b"
                     << "\\bunion\\b" << "\\bunsigned\\b" << "\\bvirtual\\b"
-                    << "\\bvoid\\b" << "\\bvolatile\\b";
+                    << "\\bvoid\\b" << "\\bvolatile\\b" << "\\bmain\\b" << "\\breturn\\b";
     foreach (const QString &pattern, keywordPatterns) {
         rule.pattern = QRegExp(pattern);
         rule.format = keywordFormat;
         highlightingRules.append(rule);
     }
-
 
 
     classFormat.setFontWeight(QFont::Bold);
@@ -49,6 +49,12 @@ Highlight::Highlight(QTextDocument *parent)
     highlightingRules.append(rule);
 
     multiLineCommentFormat.setForeground(Qt::darkGreen);
+
+    signsFormat.setForeground(Qt::cyan);
+    rule.pattern = QRegExp("\\=|\\-|\\+|\\/|\\*");
+    rule.format = signsFormat;
+    highlightingRules.append(rule);
+
 
     quotationFormat.setForeground(Qt::darkYellow);
     rule.pattern = QRegExp("\".*\"|'.*'");
@@ -76,6 +82,15 @@ Highlight::Highlight(QTextDocument *parent)
     rule.format = includeBracketsFormat;
     highlightingRules.append(rule);
 
+    bracesStartFormat.setForeground(Qt::yellow);
+    rule.pattern = QRegExp("\\{|\\(|\\[");
+    rule.format = bracesStartFormat;
+    highlightingRules.append(rule);
+
+    bracesEndFormat.setForeground(Qt::yellow);
+    rule.pattern = QRegExp("\\}|\\)|\\]");
+    rule.format = bracesEndFormat;
+    highlightingRules.append(rule);
 
     commentStartExpression = QRegExp("/\\*");
     commentEndExpression = QRegExp("\\*/");

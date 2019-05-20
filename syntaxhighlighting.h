@@ -41,5 +41,8 @@ private:
     QTextCharFormat numbersFormat;
     QTextCharFormat includeFormat;
     QTextCharFormat includeBracketsFormat;
+    QTextCharFormat bracesStartFormat;
+    QTextCharFormat bracesEndFormat;
+    QTextCharFormat signsFormat;
 };
 #endif // SYNTAXHIGHLIGHTING_H
