@@ -6,9 +6,11 @@
 #include <QPalette>
 #include <QFontDialog>
 #include <QFont>
+#include <QRegularExpression>
+
 
 const int defaultFontSize = 20;
-const QFont defaultFontStyle("Comic Sans MS"); // kek
+const QFont defaultFontStyle("Times New Roman");
 const QColor defaultColor = Qt::black;
 const QColor defaultBackgroundColor = Qt::white;
 const QColor defaultSelectColor = QColor::fromRgb(0, 120, 215, 255);

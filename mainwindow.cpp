@@ -8,6 +8,8 @@
 #include <QColor>
 #include <QTextEdit>
 #include <QDesktopWidget>
+#include <QInputDialog>
+#include <QTextCodec>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -37,6 +39,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSelection_colour, &QAction::triggered, this, &MainWindow::on_SelectionColour_pressed);
     connect(ui->actionSave_file_as, &QAction::triggered, this, &MainWindow::on_savefile_as_pressed);
     connect(ui->actionSynHL, &QAction::toggled, this, &MainWindow::SynHL);
+    connect (ui->actionUTF_8, &QAction::triggered, this, &MainWindow::code_UTF8);
+    connect(ui->actionKOI_8, &QAction::triggered, this, &MainWindow::code_KOI8);
+    connect(ui->actionWindows1251, &QAction::triggered, this, &MainWindow::code_Windows1251);
+    connect(ui->actionMacintosh, &QAction::triggered, this, &MainWindow::code_Macintosh);
 
 }
 
@@ -97,7 +103,7 @@ void MainWindow::on_BgColour_pressed()
 
 void MainWindow::on_FontSize_pressed()
 {
-    pFontMain->setFontSize(QInputDialog::getInt(this, "Изменить размер текста", "выф", pFontMain->fontSize, 1, 100));
+    pFontMain->setFontSize(QInputDialog::getInt(this, "Изменить размер текста", "", pFontMain->fontSize, 1, 100));
 }
 
 void MainWindow::on_FontColour_pressed()
@@ -127,10 +133,58 @@ void MainWindow::SynHL()
      pFontMain->setSelectColor(Qt::blue);
 
   } else {
-      pFontMain->setFontColor(Qt::black);
+      pFontMain->setFontColor(defaultColor);
       delete pHighlight;
+      QString text = ui->textEdit->toPlainText();
       pFontMain->setFontStyle(QFont("Times New Roman", 0, 75, false));
-      pFontMain->setBackgroundColor(Qt::white);
+      pFontMain->setBackgroundColor(defaultBackgroundColor);
       pFontMain->setSelectColor(defaultSelectColor);
+
+
+
   }
+}
+
+void MainWindow::code_UTF8()
+{
+  QString text = ui->textEdit->toPlainText();
+  QByteArray byteArray;
+  QDataStream in(&byteArray, QIODevice::WriteOnly);
+  in << text;
+  QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+  text = codec->toUnicode(byteArray);
+  ui->textEdit->setPlainText(text);
+}
+
+void MainWindow::code_KOI8()
+{
+  QString text = ui->textEdit->toPlainText();
+  QByteArray byteArray;
+  QDataStream in(&byteArray, QIODevice::WriteOnly);
+  in << text;
+  QTextCodec *codec = QTextCodec::codecForName("KOI8-R");
+  text = codec->toUnicode(byteArray);
+  ui->textEdit->setPlainText(text);
+}
+
+void MainWindow::code_Macintosh()
+{
+  QString text = ui->textEdit->toPlainText();
+  QByteArray byteArray;
+  QDataStream in(&byteArray, QIODevice::WriteOnly);
+  in << text;
+  QTextCodec *codec = QTextCodec::codecForName("Macintosh");
+  text = codec->toUnicode(byteArray);
+  ui->textEdit->setPlainText(text);
+}
+
+void MainWindow::code_Windows1251()
+{
+  QString text = ui->textEdit->toPlainText();
+  QByteArray byteArray;
+  QDataStream in(&byteArray, QIODevice::WriteOnly);
+  in << text;
+  QTextCodec *codec = QTextCodec::codecForName("Windows-1251");
+  text = codec->toUnicode(byteArray);
+  ui->textEdit->setPlainText(text);
 }

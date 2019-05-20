@@ -32,6 +32,10 @@ private slots:
     void on_FontStyle_pressed();
     void on_SelectionColour_pressed();
     void SynHL();
+    void code_Macintosh();
+    void code_Windows1251();
+    void code_KOI8();
+    void code_UTF8();
 
 private:
     Ui::MainWindow *ui;
