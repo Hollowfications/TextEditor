@@ -243,7 +243,7 @@ void MainWindow::on_SelectionColour_pressed()
 void MainWindow::SynHL(){
    if (ui->tabWidget->currentIndex() == 0){
 
-        pHighlight = new Highlight(pFontMain1->pFont->document());
+        pHighlight1 = new Highlight(pFontMain1->pFont->document());
 
     if (ui->actionSynHL->isChecked() == true){
         pFontMain1->setFontStyle(QFont("Courier New", 15, 10, false));
@@ -253,7 +253,7 @@ void MainWindow::SynHL(){
         pFontMain1->setSelectColor(Qt::blue);
 
      } else {
-        delete pHighlight;
+        delete pHighlight1;
         pFontMain1->setFontColor(defaultFontColor);
         pFontMain1->setFontStyle(defaultFontStyle);
         pFontMain1->setBackgroundColor(defaultBackgroundColor);
@@ -263,21 +263,21 @@ void MainWindow::SynHL(){
    }
    if (ui->tabWidget->currentIndex() == 1){
 
-        pHighlight = new Highlight(pFontMain1->pFont->document());
+        pHighlight2 = new Highlight(pFontMain2->pFont->document());
 
     if (ui->actionSynHL->isChecked() == true){
-        pFontMain1->setFontStyle(QFont("Courier New", 15, 10, false));
-        pFontMain1->setFontSize(25);
-        pFontMain1->setBackgroundColor(Qt::black);
-        pFontMain1->setFontColor(Qt::white);
-        pFontMain1->setSelectColor(Qt::blue);
+        pFontMain2->setFontStyle(QFont("Courier New", 15, 10, false));
+        pFontMain2->setFontSize(25);
+        pFontMain2->setBackgroundColor(Qt::black);
+        pFontMain2->setFontColor(Qt::white);
+        pFontMain2->setSelectColor(Qt::blue);
 
      } else {
-        delete pHighlight;
-        pFontMain1->setFontColor(defaultFontColor);
-        pFontMain1->setFontStyle(defaultFontStyle);
-        pFontMain1->setBackgroundColor(defaultBackgroundColor);
-        pFontMain1->setSelectColor(defaultSelectColor);
+        delete pHighlight2;
+        pFontMain2->setFontColor(defaultFontColor);
+        pFontMain2->setFontStyle(defaultFontStyle);
+        pFontMain2->setBackgroundColor(defaultBackgroundColor);
+        pFontMain2->setSelectColor(defaultSelectColor);
     }
 
    }

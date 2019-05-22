@@ -45,7 +45,8 @@ private:
     FileManager *pFileManager;
     Font *pFontMain1;
     Font *pFontMain2;
-    Highlight *pHighlight;
+    Highlight *pHighlight1;
+    Highlight *pHighlight2;
 
 };
 
