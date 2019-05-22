@@ -32,6 +32,8 @@ public:
     int fontSize;
     QColor selectColor;
     QTextEdit *pFont;
+
+
 };
 
 #endif // FONT_H

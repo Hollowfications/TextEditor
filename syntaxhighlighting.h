@@ -15,10 +15,7 @@ class Highlight : public QSyntaxHighlighter
 public:
     Highlight(QTextDocument *parent = nullptr);
     ~Highlight();
-
-protected:
     void highlightBlock(const QString &text);
-
 private:
     struct SyntaxHighlightingRule
     {

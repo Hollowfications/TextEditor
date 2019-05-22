@@ -7,7 +7,7 @@ Highlight::Highlight(QTextDocument *parent)
     SyntaxHighlightingRule rule;
 
     normalTextFormat.setForeground(Qt::darkCyan);
-    rule.pattern = QRegExp("\\b[A-Za-z]+\\b");
+    rule.pattern = QRegExp("\\b[A-Za-z]+\\b|\\;");
     rule.format = normalTextFormat;
     highlightingRules.append(rule);
 

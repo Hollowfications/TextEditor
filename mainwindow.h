@@ -19,7 +19,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    QString current_filepath;
+    QString current_filepath1;
+    QString current_filepath2;
 private slots:
     void on_openfile_pressed();
     void on_newfile_pressed();
@@ -31,16 +32,19 @@ private slots:
     void on_FontSize_pressed();
     void on_FontStyle_pressed();
     void on_SelectionColour_pressed();
+    void on_open_in_new_pressed();
     void SynHL();
     void code_Macintosh();
     void code_Windows1251();
     void code_KOI8();
     void code_UTF8();
+    void close_tab(int index);
 
 private:
     Ui::MainWindow *ui;
     FileManager *pFileManager;
-    Font *pFontMain;
+    Font *pFontMain1;
+    Font *pFontMain2;
     Highlight *pHighlight;
 
 };
