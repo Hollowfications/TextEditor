@@ -7,7 +7,7 @@ FileManager::FileManager(){};
 FileManager::~FileManager(){};
 
 
-QString FileManager::openfile(QString filepath)
+QString FileManager::open(QString filepath)
 {
     QFile file(filepath);
     QTextStream fstream(&file);
@@ -21,11 +21,10 @@ void FileManager::newfile( QString &filepath)
 {
     QFile file(filepath);
     file.open(QIODevice::WriteOnly);
-
     file.close();
 }
 
-void FileManager::savefile(QString &filepath, QString& text)
+void FileManager::save(QString &filepath, QString& text)
 {
     QFile file (filepath);
     QTextStream fstream(&file);

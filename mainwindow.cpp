@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <cstdlib>
 #include <QString>
 #include <QMessageBox>
 #include <QFileDialog>
@@ -33,218 +34,196 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionSelect_all->setShortcut(QKeySequence(tr("Ctrl+A","Select all")));
     ui->actionSave_file_as->setShortcut(QKeySequence("Ctrl+Shift+S"));
 
-    connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(close_tab(int)));
-    connect(ui->actionOpen_file, &QAction::triggered, this, &MainWindow::on_openfile_pressed);
-    connect(ui->actionNew_file, &QAction::triggered, this, &MainWindow::on_newfile_pressed);
-    connect(ui->actionSave_file, &QAction::triggered, this, &MainWindow::on_savefile_pressed);
-    connect(ui->actionOpen_in_new, &QAction::triggered, this, &MainWindow::on_open_in_new_pressed);
-    connect(ui->actionBackground_colour, &QAction::triggered, this, &MainWindow::on_BgColour_pressed);
-    connect(ui->actionTextBgColour, &QAction::triggered, this, &MainWindow::on_TextBgColour_pressed);
-    connect(ui->actionFont_colour, &QAction::triggered, this, &MainWindow::on_FontColour_pressed);
-    connect(ui->actionFont_size, &QAction::triggered, this, &MainWindow::on_FontSize_pressed);
-    connect(ui->actionFont_style, &QAction::triggered, this, &MainWindow::on_FontStyle_pressed);
-    connect(ui->actionSelection_colour, &QAction::triggered, this, &MainWindow::on_SelectionColour_pressed);
-    connect(ui->actionSave_file_as, &QAction::triggered, this, &MainWindow::on_savefile_as_pressed);
+    connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
+    connect(ui->actionNew_file, &QAction::triggered, this, &MainWindow::newFile);
+    connect(ui->actionSave_file, &QAction::triggered, this, &MainWindow::saveFile);
+    connect(ui->actionSave_file_as, &QAction::triggered, this, &MainWindow::saveAs);
+    connect(ui->actionOpen_file, &QAction::triggered, this, &MainWindow::openFile);
+    connect(ui->actionOpen_second_tab, &QAction::triggered, this, &MainWindow::openInNew);
+    connect(ui->actionBackground_colour, &QAction::triggered, this, &MainWindow::changeBgColour);
+    connect(ui->actionTextBgColour, &QAction::triggered, this, &MainWindow::changeTextBgColour);
+    connect(ui->actionFont_colour, &QAction::triggered, this, &MainWindow::changeFontColour);
+    connect(ui->actionFont_size, &QAction::triggered, this, &MainWindow::changeFontSize);
+    connect(ui->actionFont_style, &QAction::triggered, this, &MainWindow::changeFontStyle);
+    connect(ui->actionSelection_colour, &QAction::triggered, this, &MainWindow::changeSelectionColour);
     connect(ui->actionSynHL, &QAction::toggled, this, &MainWindow::SynHL);
-    connect(ui->actionUTF_8, &QAction::triggered, this, &MainWindow::code_UTF8);
-    connect(ui->actionKOI_8, &QAction::triggered, this, &MainWindow::code_KOI8);
-    connect(ui->actionWindows1251, &QAction::triggered, this, &MainWindow::code_Windows1251);
-    connect(ui->actionMacintosh, &QAction::triggered, this, &MainWindow::code_Macintosh);
+    connect(ui->actionUTF_8, &QAction::triggered, this, &MainWindow::codeUTF8);
+    connect(ui->actionKOI_8, &QAction::triggered, this, &MainWindow::codeKOI8);
+    connect(ui->actionWindows1251, &QAction::triggered, this, &MainWindow::codeWindows1251);
 }
-
 MainWindow::~MainWindow()
 {
     delete ui;
 }
 
 
-void MainWindow::close_tab(int index){
-    if (ui->tabWidget->currentIndex() != 0){
+void MainWindow::closeTab(int index){
+    if (ui->tabWidget->currentIndex() != 0) {
         ui->tabWidget->removeTab(index);
     }
-    else if (ui->tabWidget->currentIndex() == 0){
+    else if (ui->tabWidget->currentIndex() == 0) {
         return;
     }
-
 }
 
 
-void MainWindow::on_openfile_pressed() {
-    if (ui->tabWidget->currentIndex() == 0){
+void MainWindow::openFile() {
+    if (ui->tabWidget->currentIndex() == 0) {
         QString filepath = QFileDialog::getOpenFileName(this, tr("Open file"),
                                                     "C:/qt_projects/documents",
                                                tr("Text files (*.txt *.docx *.cpp *.h *.c)"));
-        if (filepath != ""){
-            ui->textEdit->setText(pFileManager->openfile(filepath));
-            current_filepath1 = filepath;
-        }
-    }
-    if (ui->tabWidget->currentIndex() == 1){
-
-        QString filepath = QFileDialog::getOpenFileName(this, tr("Open file"),
-                                                    "C:/qt_projects/documents",
-                                               tr("Text files (*.txt *.docx *.cpp *.h *.c)"));
-        if (filepath != ""){
-            ui->textEdit_2->setText(pFileManager->openfile(filepath));
-            current_filepath2 = filepath;
-        }
-    }
-}
-
-void MainWindow::on_open_in_new_pressed(){
-    if (ui->tabWidget->currentIndex() == 0){
-        QString filepath = QFileDialog::getOpenFileName(this, tr("Open file"),
-                                                        "C:/qt_projects/documents",
-                                                   tr("Text files (*.txt *.docx *.cpp *.h *.c)"));
-        if (filepath != ""){
-            ui->textEdit->setText(pFileManager->openfile(filepath));
-            current_filepath1 = filepath;
-        }
-    }
-    if (ui->tabWidget->currentIndex() == 1){
-        QString filepath = QFileDialog::getOpenFileName(this, tr("Open file"),
-                                                        "C:/qt_projects/documents",
-                                                   tr("Text files (*.txt *.docx *.cpp *.h *.c)"));
-        if (filepath != ""){
-            ui->textEdit_2->setText(pFileManager->openfile(filepath));
-            current_filepath2 = filepath;
-        }
-    }
-
-}
-void  MainWindow::on_savefile_pressed(){
-    if (ui->tabWidget->currentIndex() == 0){
-        if(current_filepath1 != "")
-        {
-            QString text = ui->textEdit->toPlainText();
-            pFileManager->savefile(current_filepath1, text);
+        if (filepath != "") {
+            ui->textEdit->setText(pFileManager->open(filepath));
+            currentFilepath1 = filepath;
         }
     }
     if (ui->tabWidget->currentIndex() == 1) {
-        if(current_filepath2 != "")
-        {
-            QString text = ui->textEdit->toPlainText();
-            pFileManager->savefile(current_filepath2, text);
+
+        QString filepath = QFileDialog::getOpenFileName(this, tr("Open file"),
+                                                    "C:/qt_projects/documents",
+                                               tr("Text files (*.txt *.docx *.cpp *.h *.c)"));
+        if (filepath != ""){
+            ui->textEdit_2->setText(pFileManager->open(filepath));
+            currentFilepath2 = filepath;
         }
     }
 }
 
-void MainWindow::on_newfile_pressed() {
-    if (ui->tabWidget->currentIndex() == 0){
-        QString path = QFileDialog::getSaveFileName(this, tr("Создать файл"), "sampleText");
-        current_filepath1 = path;
+void MainWindow::openInNew() {
+    if (ui->tabWidget->currentIndex() == 0) {
+    QString filepath = QFileDialog::getOpenFileName(this, tr("Open file"),
+                                                    "C:/qt_projects/documents",
+                                               tr("Text files (*.txt *.docx *.cpp *.h *.c)"));
+    if (filepath != "") {
+        ui->tabWidget->addTab(new QTextEdit(), QString("Tab 2").arg(ui->tabWidget->count() + 1));
+        for(int i = ui->tabWidget->count() - 1; i < ui->tabWidget->count(); i++) {
+            QTextEdit* textEdit = qobject_cast<QTextEdit*>(ui->tabWidget->widget(i));
+            if(textEdit) {
+                textEdit->setText(pFileManager->open(filepath));
+            }
+        }
+     }
+    }
+}
+void  MainWindow::saveFile() {
+    if (ui->tabWidget->currentIndex() == 0) {
+        if(currentFilepath1 != "") {
+            QString text = ui->textEdit->toPlainText();
+            pFileManager->save(currentFilepath1, text);
+        }
+    }
+    if (ui->tabWidget->currentIndex() == 1) {
+        if(currentFilepath2 != "") {
+            QString text = ui->textEdit->toPlainText();
+            pFileManager->save(currentFilepath2, text);
+        }
+    }
+}
+
+void MainWindow::newFile() {
+    if (ui->tabWidget->currentIndex() == 0) {
+        QString path = QFileDialog::getSaveFileName(this, tr("Создать файл"), "C:/qt_projects/documents", "sampleText");
+        currentFilepath1 = path;
         pFileManager->newfile(path);
     }
-    if (ui->tabWidget->currentIndex() == 1){
+    if (ui->tabWidget->currentIndex() == 1) {
         QString path = QFileDialog::getSaveFileName(this, tr("Создать файл"), "sampleText");
-        current_filepath2 = path;
+        currentFilepath2 = path;
         pFileManager->newfile(path);
     }
 }
 
-void MainWindow::on_savefile_as_pressed(){
-
-    if (ui->tabWidget->currentIndex() == 0){
+void MainWindow::saveAs() {
+    if (ui->tabWidget->currentIndex() == 0) {
         QString text = ui->textEdit->toPlainText();
         QString filepath = QFileDialog::getSaveFileName(this, tr("Open file"),
                                                         "C:/qt_projects/documents",
                                                    tr("Text files (*.txt *.docx *.cpp *.h *.c)"));
-        if (filepath != ""){
-            current_filepath1 = filepath;
-            pFileManager->savefile(current_filepath1, text);
+        if (filepath != "") {
+            currentFilepath1 = filepath;
+            pFileManager->save(currentFilepath1, text);
         }
     }
-    if (ui->tabWidget->currentIndex() == 1){
+    if (ui->tabWidget->currentIndex() == 1) {
         QString text = ui->textEdit_2->toPlainText();
         QString filepath = QFileDialog::getSaveFileName(this, tr("Open file"),
                                                         "C:/qt_projects/documents",
                                                    tr("Text files (*.txt *.docx *.cpp *.h *.c)"));
-        if (filepath != ""){
-            current_filepath2 = filepath;
-            pFileManager->savefile(current_filepath2, text);
+        if (filepath != "") {
+            currentFilepath2 = filepath;
+            pFileManager->save(currentFilepath2, text);
         }
     }
-
 }
 
-void MainWindow::on_TextBgColour_pressed(){
-    if (ui->tabWidget->currentIndex() == 0){
+void MainWindow::changeTextBgColour() {
+    if (ui->tabWidget->currentIndex() == 0) {
         QColor col = QColorDialog::getColor(ui->textEdit->textBackgroundColor(), this);
         if (col.isValid()) {
             ui->textEdit->setTextBackgroundColor(col);
-        };
+        }
         ui->textEdit->show();
     }
-    if (ui->tabWidget->currentIndex() == 1){
+    if (ui->tabWidget->currentIndex() == 1) {
         QColor col = QColorDialog::getColor(ui->textEdit->textBackgroundColor(), this);
         if (col.isValid()) {
             ui->textEdit_2->setTextBackgroundColor(col);
-        };
+        }
         ui->textEdit_2->show();
     }
-
 }
 
-void MainWindow::on_BgColour_pressed()
-{
-    if (ui->tabWidget->currentIndex() == 0){
+void MainWindow::changeBgColour() {
+    if (ui->tabWidget->currentIndex() == 0) {
 
         pFontMain1->setBackgroundColor(QColorDialog::getColor(pFontMain1->backgroundColor, this));
     }
-    if (ui->tabWidget->currentIndex() == 1){
+    if (ui->tabWidget->currentIndex() == 1) {
         pFontMain2->setBackgroundColor(QColorDialog::getColor(pFontMain2->backgroundColor, this));
 
     }
 }
 
-void MainWindow::on_FontSize_pressed()
-{
-    if (ui->tabWidget->currentIndex() == 0){
+void MainWindow::changeFontSize() {
+    if (ui->tabWidget->currentIndex() == 0) {
         pFontMain1->setFontSize(QInputDialog::getInt(this, "Изменить размер текста", "", pFontMain1->fontSize, 1, 100));
     }
-    if (ui->tabWidget->currentIndex() == 1){
+    if (ui->tabWidget->currentIndex() == 1) {
         pFontMain2->setFontSize(QInputDialog::getInt(this, "Изменить размер текста", "", pFontMain2->fontSize, 1, 100));
     }
 }
 
-void MainWindow::on_FontColour_pressed()
-{
-    if (ui->tabWidget->currentIndex() == 0){
+void MainWindow::changeFontColour() {
+    if (ui->tabWidget->currentIndex() == 0) {
         pFontMain1->setFontColor(QColorDialog::getColor(pFontMain1->fontColor,this));
     }
-    if (ui->tabWidget->currentIndex() == 1){
+    if (ui->tabWidget->currentIndex() == 1) {
         pFontMain2->setFontColor(QColorDialog::getColor(pFontMain2->fontColor,this));
-
     }
 }
 
-void MainWindow::on_FontStyle_pressed()
-{
-    if (ui->tabWidget->currentIndex() == 0){
+void MainWindow::changeFontStyle() {
+    if (ui->tabWidget->currentIndex() == 0) {
         pFontMain1->setFontStyle(QFontDialog::getFont(nullptr, pFontMain1->fontStyle, this));
     }
-    if (ui->tabWidget->currentIndex() == 0){
+    if (ui->tabWidget->currentIndex() == 1) {
         pFontMain2->setFontStyle(QFontDialog::getFont(nullptr, pFontMain2->fontStyle, this));
-
     }
 }
 
-void MainWindow::on_SelectionColour_pressed()
-{
-    if (ui->tabWidget->currentIndex() == 0){
+void MainWindow::changeSelectionColour() {
+    if (ui->tabWidget->currentIndex() == 0) {
         pFontMain1->setSelectColor(QColorDialog::getColor(pFontMain1->selectColor,this));
     }
-    if (ui->tabWidget->currentIndex() == 1){
+    if (ui->tabWidget->currentIndex() == 1) {
         pFontMain2->setSelectColor(QColorDialog::getColor(pFontMain2->selectColor,this));
 
     }
 }
 
 void MainWindow::SynHL(){
-   if (ui->tabWidget->currentIndex() == 0){
-
+   if (ui->tabWidget->currentIndex() == 0) {
         pHighlight1 = new Highlight(pFontMain1->pFont->document());
-
     if (ui->actionSynHL->isChecked() == true){
         pFontMain1->setFontStyle(QFont("Courier New", 15, 10, false));
         pFontMain1->setFontSize(25);
@@ -261,10 +240,8 @@ void MainWindow::SynHL(){
     }
 
    }
-   if (ui->tabWidget->currentIndex() == 1){
-
+   if (ui->tabWidget->currentIndex() == 1) {
         pHighlight2 = new Highlight(pFontMain2->pFont->document());
-
     if (ui->actionSynHL->isChecked() == true){
         pFontMain2->setFontStyle(QFont("Courier New", 15, 10, false));
         pFontMain2->setFontSize(25);
@@ -281,95 +258,73 @@ void MainWindow::SynHL(){
     }
 
    }
-
-
 }
 
-void MainWindow::code_UTF8()
-{
-    if (ui->tabWidget->currentIndex() == 0){
+void MainWindow::codeUTF8() {
+    if (ui->tabWidget->currentIndex() == 0) {
         QString text = ui->textEdit->toPlainText();
-        QByteArray byteArray;
-        QDataStream in(&byteArray, QIODevice::WriteOnly);
-        in << text;
         QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-        text = codec->toUnicode(byteArray);
+        QByteArray byteArray;
+        QDataStream in(&byteArray, QIODevice::ReadOnly);
+        in >> byteArray;
+        byteArray = codec->fromUnicode(text);
+        text = byteArray;
         ui->textEdit->setPlainText(text);
     }
-    if (ui->tabWidget->currentIndex() == 1){
+    if (ui->tabWidget->currentIndex() == 1) {
         QString text = ui->textEdit_2->toPlainText();
-        QByteArray byteArray;
-        QDataStream in(&byteArray, QIODevice::WriteOnly);
-        in << text;
         QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-        text = codec->toUnicode(byteArray);
-        ui->textEdit_2->setPlainText(text);
-    }
-
-}
-
-void MainWindow::code_KOI8()
-{
-    if (ui->tabWidget->currentIndex() == 0){
-        QString text = ui->textEdit->toPlainText();
         QByteArray byteArray;
-        QDataStream in(&byteArray, QIODevice::WriteOnly);
-        in << text;
-        QTextCodec *codec = QTextCodec::codecForName("KOI-8-R");
-        text = codec->toUnicode(byteArray);
+        QDataStream in(&byteArray, QIODevice::ReadOnly);
+        in >> byteArray;
+        byteArray = codec->fromUnicode(text);
+        text = byteArray;
         ui->textEdit->setPlainText(text);
     }
-    if (ui->tabWidget->currentIndex() == 1){
-        QString text = ui->textEdit_2->toPlainText();
-        QByteArray byteArray;
-        QDataStream in(&byteArray, QIODevice::WriteOnly);
-        in << text;
-        QTextCodec *codec = QTextCodec::codecForName("KOI-8-R");
-        text = codec->toUnicode(byteArray);
-        ui->textEdit_2->setPlainText(text);
-    }
 }
 
-void MainWindow::code_Macintosh()
-{
-    if (ui->tabWidget->currentIndex() == 0){
+void MainWindow::codeKOI8() {
+    if (ui->tabWidget->currentIndex() == 0) {
         QString text = ui->textEdit->toPlainText();
+        QTextCodec *codec = QTextCodec::codecForName("KOI8-R");
         QByteArray byteArray;
-        QDataStream in(&byteArray, QIODevice::WriteOnly);
-        in << text;
-        QTextCodec *codec = QTextCodec::codecForName("Macintosh");
-        text = codec->toUnicode(byteArray);
+        QDataStream in(&byteArray, QIODevice::ReadOnly);
+        in >> byteArray;
+        byteArray = codec->fromUnicode(text);
+        text = byteArray;
         ui->textEdit->setPlainText(text);
     }
-    if (ui->tabWidget->currentIndex() == 1){
-        QString text = ui->textEdit_2->toPlainText();
+    if (ui->tabWidget->currentIndex() == 1) {
+        QString text = ui->textEdit->toPlainText();
+        QTextCodec *codec = QTextCodec::codecForName("KOI8-R");
         QByteArray byteArray;
-        QDataStream in(&byteArray, QIODevice::WriteOnly);
-        in << text;
-        QTextCodec *codec = QTextCodec::codecForName("Macintosh");
-        text = codec->toUnicode(byteArray);
+        QDataStream in(&byteArray, QIODevice::ReadOnly);
+        in >> byteArray;
+        byteArray = codec->fromUnicode(text);
+        text = byteArray;
         ui->textEdit_2->setPlainText(text);
     }
 }
 
-void MainWindow::code_Windows1251()
-{
-    if (ui->tabWidget->currentIndex() == 0){
+void MainWindow::codeWindows1251() {
+    if (ui->tabWidget->currentIndex() == 0) {
         QString text = ui->textEdit->toPlainText();
-        QByteArray byteArray;
-        QDataStream in(&byteArray, QIODevice::WriteOnly);
-        in << text;
         QTextCodec *codec = QTextCodec::codecForName("Windows-1251");
-        text = codec->toUnicode(byteArray);
+        QByteArray byteArray;
+        QDataStream in(&byteArray, QIODevice::ReadOnly);
+        in >> byteArray;
+        byteArray = codec->fromUnicode(text);
+        text = byteArray;
         ui->textEdit->setPlainText(text);
     }
-    if (ui->tabWidget->currentIndex() == 1){
+    if (ui->tabWidget->currentIndex() == 1) {
         QString text = ui->textEdit_2->toPlainText();
+        QTextCodec *codec = QTextCodec::codecForName("Windows-1251");
         QByteArray byteArray;
-        QDataStream in(&byteArray, QIODevice::WriteOnly);
-        in << text;
-        QTextCodec *codec = QTextCodec::codecForName("Windows-1252");
-        text = codec->toUnicode(byteArray);
-        ui->textEdit_2->setPlainText(text);
+        QDataStream in(&byteArray, QIODevice::ReadOnly);
+        in >> byteArray;
+        byteArray = codec->fromUnicode(text);
+        text = byteArray;
+        ui->textEdit->setPlainText(text);
     }
 }

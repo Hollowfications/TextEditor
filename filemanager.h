@@ -7,8 +7,8 @@ class FileManager {
 public:
    FileManager();
    void newfile(QString &filepath);
-   void savefile(QString &filepath, QString &text);
-   QString openfile(QString filepath);
+   void save(QString &filepath, QString &text);
+   QString open(QString filepath);
    ~FileManager();
 };
 

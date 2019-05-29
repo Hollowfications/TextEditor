@@ -128,16 +128,15 @@
       <string>Change coding</string>
      </property>
      <addaction name="actionUTF_8"/>
-     <addaction name="actionMacintosh"/>
      <addaction name="actionWindows1251"/>
      <addaction name="actionKOI_8"/>
     </widget>
     <addaction name="actionNew_file"/>
     <addaction name="actionOpen_file"/>
     <addaction name="actionSave_file"/>
-    <addaction name="actionSave_file_as"/>
+    <addaction name="actionSave_file_as_2"/>
     <addaction name="menuChange_coding"/>
-    <addaction name="actionOpen_in_new"/>
+    <addaction name="actionOpen_second_tab"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -321,6 +320,16 @@
   <action name="actionFont_colour_2">
    <property name="text">
     <string>Font colour</string>
+   </property>
+  </action>
+  <action name="actionSave_file_as_2">
+   <property name="text">
+    <string>Save file as...</string>
+   </property>
+  </action>
+  <action name="actionOpen_second_tab">
+   <property name="text">
+    <string>Open second tab...</string>
    </property>
   </action>
  </widget>
