@@ -39,8 +39,8 @@ private slots:
     void codeWindows1251();
     void codeKOI8();
     void codeUTF8();
-    void closeTab(int index);
-    void openInNew();
+    //void closeTab(int index);
+    //void openInNew();
 
 private:
     Ui::MainWindow *ui;

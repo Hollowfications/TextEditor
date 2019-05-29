@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->tabWidget->setTabsClosable(true);
+    //ui->tabWidget->setTabsClosable(true);
     ui->tabWidget->setMovable(true);
 
     pFileManager = new FileManager();
@@ -34,12 +34,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionSelect_all->setShortcut(QKeySequence(tr("Ctrl+A","Select all")));
     ui->actionSave_file_as->setShortcut(QKeySequence("Ctrl+Shift+S"));
 
-    connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
+    //connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
     connect(ui->actionNew_file, &QAction::triggered, this, &MainWindow::newFile);
     connect(ui->actionSave_file, &QAction::triggered, this, &MainWindow::saveFile);
     connect(ui->actionSave_file_as, &QAction::triggered, this, &MainWindow::saveAs);
     connect(ui->actionOpen_file, &QAction::triggered, this, &MainWindow::openFile);
-    connect(ui->actionOpen_second_tab, &QAction::triggered, this, &MainWindow::openInNew);
+    //connect(ui->actionOpen_second_tab, &QAction::triggered, this, &MainWindow::openInNew);
     connect(ui->actionBackground_colour, &QAction::triggered, this, &MainWindow::changeBgColour);
     connect(ui->actionTextBgColour, &QAction::triggered, this, &MainWindow::changeTextBgColour);
     connect(ui->actionFont_colour, &QAction::triggered, this, &MainWindow::changeFontColour);
@@ -57,14 +57,14 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::closeTab(int index){
+/*void MainWindow::closeTab(int index){
     if (ui->tabWidget->currentIndex() != 0) {
         ui->tabWidget->removeTab(index);
     }
     else if (ui->tabWidget->currentIndex() == 0) {
         return;
     }
-}
+}*/
 
 
 void MainWindow::openFile() {
@@ -89,7 +89,7 @@ void MainWindow::openFile() {
     }
 }
 
-void MainWindow::openInNew() {
+/*void MainWindow::openInNew() {
     if (ui->tabWidget->currentIndex() == 0) {
     QString filepath = QFileDialog::getOpenFileName(this, tr("Open file"),
                                                     "C:/qt_projects/documents",
@@ -104,7 +104,7 @@ void MainWindow::openInNew() {
         }
      }
     }
-}
+}*/
 void  MainWindow::saveFile() {
     if (ui->tabWidget->currentIndex() == 0) {
         if(currentFilepath1 != "") {
@@ -279,7 +279,7 @@ void MainWindow::codeUTF8() {
         in >> byteArray;
         byteArray = codec->fromUnicode(text);
         text = byteArray;
-        ui->textEdit->setPlainText(text);
+        ui->textEdit_2->setPlainText(text);
     }
 }
 
@@ -295,7 +295,7 @@ void MainWindow::codeKOI8() {
         ui->textEdit->setPlainText(text);
     }
     if (ui->tabWidget->currentIndex() == 1) {
-        QString text = ui->textEdit->toPlainText();
+        QString text = ui->textEdit_2->toPlainText();
         QTextCodec *codec = QTextCodec::codecForName("KOI8-R");
         QByteArray byteArray;
         QDataStream in(&byteArray, QIODevice::ReadOnly);
@@ -325,6 +325,6 @@ void MainWindow::codeWindows1251() {
         in >> byteArray;
         byteArray = codec->fromUnicode(text);
         text = byteArray;
-        ui->textEdit->setPlainText(text);
+        ui->textEdit_2->setPlainText(text);
     }
 }
